@@ -5,9 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'hangman.services' is found in services.js
 // 'hangman.controllers' is found in controllers.js
-var app = angular.module('hangman', ['ionic'])
+var app = angular.module('hangman', ['ionic','ngCordova'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, DatabaseService) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -33,7 +33,8 @@ var app = angular.module('hangman', ['ionic'])
   .state('app', {
     url: "/app",
     abstract: true,
-    templateUrl: "templates/tabs.html"
+    templateUrl: "templates/tabs.html",
+    controller: 'AppCtrl'
   })
 
   // Each app has its own nav history stack:
