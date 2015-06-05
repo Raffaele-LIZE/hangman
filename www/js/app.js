@@ -18,6 +18,15 @@ var app = angular.module('hangman', ['ionic','ngCordova'])
       // org.apache.cordova.statusbar required
       StatusBar.styleLightContent();
     }
+
+    var field = {
+          name: "text",
+          age: "integer"
+    };
+
+    DatabaseService.create('TEST2', field);
+    DatabaseService.insert('TEST2', ['name', 'age'], ['majdi', 21]);
+
   });
 })
 

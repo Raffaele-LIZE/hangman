@@ -6,26 +6,48 @@ app.factory('DatabaseService', function($cordovaSQLite) {
     function Database () {
 
         if (window.sqlitePlugin !== undefined) {
-            Database.db = $cordovaSQLite.openDB({ name: 'HANGMAN.db'});
+            Database.prototype.db = $cordovaSQLite.openDB(Database.prototype.dbName );
         } else {
-
-            Database.db = window.openDatabase(Database.name, Database.dbVersion, Database.dbComments, Database.dbEstimatedSize);            
+            Database.prototype.db = window.openDatabase(Database.prototype.dbName, Database.prototype.dbVersion, Database.prototype.dbComments, Database.prototype.dbEstimatedSize);         
         }
     }
  
     // ABSTRACT
  
     Database.prototype.execute = function(query, params, cbSuccess, cbError) {
+        
+        if (!params) {
+            params = [];
+        }
+
+        if (!cbSuccess) {
+            cbSuccess = function(result) {}
+        }
+
+        if (!cbError) {
+            cbError = function(error) {
+                console.log('db error : %s ', error.message);
+            }
+        }
+
+        Database.prototype.db.transaction(function (tx) {  
+           tx.executeSql(query, params, function(tx, result) {
+                cbSuccess(result);
+           },
+           function(tx, error) {
+               cbError(error);
+           });
+        });
     }
  
     Database.prototype.create = function(table_name, fields_description) {
 
-        var query = "CREATE TABLE " + table_name + " (" ;
+        var query = "CREATE TABLE IF NOT EXISTS " + table_name + " (" ;
         angular.forEach(fields_description, function(type, name) {
             query += name + " " + type + ",";  
         });
 
-        query = query.slice(O, -1);
+        query = query.slice(0, -1);
         query += ")";
 
         this.execute(query);
@@ -35,12 +57,12 @@ app.factory('DatabaseService', function($cordovaSQLite) {
 
         var query = "INSERT INTO " + table_name + " (";
 
-        for (var i=0; i<fields_ar.length; i++){
+        for (var i = 0; i < fields_ar.length; i++){
             query += fields_ar[i] + ",";
         }
 
         query = query.slice(0, -1) + ")";
-        query += " VALUES (" + Array(fields_ar.length).join("?,").slice(0, -1) + ")";
+        query += " VALUES (" + Array(fields_ar.length + 1).join("?,").slice(0, -1) + ")";
 
         this.execute(query, values_ar);
     }
@@ -52,6 +74,14 @@ app.factory('DatabaseService', function($cordovaSQLite) {
         this.execute(query,[], function() { 
             callback();
         });
+    }
+
+    Database.prototype.count = function(table_name, callback) {
+        var query = "SELECT COUNT(*) FROM" + table_name + ";";
+        this.execute(query, [], function(result) {
+            result = result.rows.item(0);
+            callback(result["COUNT(*)"]);
+        }); 
     }
  
     // ATTRIBUTES
