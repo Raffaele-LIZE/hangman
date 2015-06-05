@@ -1,0 +1,21 @@
+<ion-view view-title="Let's Play">
+  <ion-content padding="true">
+    <button ng-click="openModal();" class="button button-block button-positive">
+      Start
+    </button>
+    <button class="button button-block button-calm">
+      Continu
+    </button>
+
+    <script id="my-modal.html" type="text/ng-template">
+      <ion-modal-view ng-controller="">
+        <ion-header-bar>
+          <h1 class="title">VS Computer</h1>
+        </ion-header-bar>
+        <ion-content>
+          Hello!
+        </ion-content>
+      </ion-modal-view>
+    </script>
+  </ion-content>
+</ion-view>
