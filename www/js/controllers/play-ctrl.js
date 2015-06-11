@@ -1,6 +1,8 @@
 
 app.controller('PlayCtrl', function($scope, $ionicModal, $ionicPopup, $timeout) {
 
+	$scope.word = '';
+
 	$ionicModal.fromTemplateUrl('my-modal.html', {
 	    scope: $scope,
 	    animation: 'slide-in-up'
@@ -36,7 +38,17 @@ app.controller('PlayCtrl', function($scope, $ionicModal, $ionicPopup, $timeout) 
 			   inputType: 'text',
 			   inputPlaceholder: 'Efreitech'
 			 }).then(function(res) {
-			   console.log('Your word is', res);
+			 	if(res !== undefined) {
+			 		if(res.length >= 3 && res.length <= 10) {
+			 			$scope.word = res;
+			 			console.log($scope.word);
+			 		} else {
+						console.log('Incorrect word');
+			 		}
+			 	} else {
+			 		// get Service RandomWord
+			 		// $scope.word = ...RandomWord;
+			 	}
 			 });
 		}, 1000);
 	});
