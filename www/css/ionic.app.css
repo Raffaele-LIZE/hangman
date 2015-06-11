@@ -7674,3 +7674,18 @@ a.button {
   opacity: 0;
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
+
+/*****************/
+/*** MODAL CSS ***/
+/*****************/
+.hangman-img-step {
+  height: 300px;
+  width: 300px;
+  margin: 0 auto;
+  margin-top: 20px; }
+
+.find-word {
+  font-size: 20px;
+  width: 300px;
+  margin: 0 auto;
+  text-align: center; }

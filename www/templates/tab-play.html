@@ -8,12 +8,16 @@
     </button>
 
     <script id="my-modal.html" type="text/ng-template">
-      <ion-modal-view ng-controller="">
+      <ion-modal-view>
         <ion-header-bar>
           <h1 class="title">VS Computer</h1>
         </ion-header-bar>
         <ion-content>
-          Hello!
+
+          <div class="hangman-img-step"><hangman-step index="game.currentStep" /></div>
+          <div><hangman-data word="game.word" find="game.found" /></div>
+          <button ng-click="nextStep();">NEXT STEP</button>
+
         </ion-content>
       </ion-modal-view>
     </script>

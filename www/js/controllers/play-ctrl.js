@@ -1,7 +1,27 @@
 
-app.controller('PlayCtrl', function($scope, $ionicModal, $ionicPopup, $timeout) {
+app.controller('PlayCtrl', function($scope, $ionicModal, $ionicPopup, $timeout, DicoService) {
 
-	$scope.word = '';
+	$scope.game = {
+		word: undefined,
+		found: [],
+		currentStep: 0,
+		nbStep: 10,
+		isFinished: false,
+		currentPlayer: 'user',
+	}
+
+	$scope.random = function(tab) {
+		item = tab[Math.floor(Math.random()*tab.length)];
+		return item.word;
+	};
+
+	$scope.nextStep = function() {
+		if($scope.game.currentStep != $scope.game.nbStep) {
+			$scope.game.currentStep++;
+		} else {
+			$scope.game.currentStep = 0;
+		}
+	};
 
 	$ionicModal.fromTemplateUrl('my-modal.html', {
 	    scope: $scope,
@@ -30,25 +50,34 @@ app.controller('PlayCtrl', function($scope, $ionicModal, $ionicPopup, $timeout) 
 	});
 	$scope.$on('modal.shown', function() {
 		$timeout(function() {
-			$ionicPopup.prompt({
+			$ionicPopup.show({
 			   title: 'Choose a word between 3 and 10',
-			   template: 'Enter the word here',
-			   cancelText: 'Random',
-			   cancelType: 'button-energized',
-			   inputType: 'text',
-			   inputPlaceholder: 'Efreitech'
+			   template: '<input type="text" ng-model="game.word">',
+			   inputPlaceholder: 'Efreitech',
+			   scope: $scope,
+			   buttons: [
+		      	{ 
+			      	text: 'Random',
+			      	type: 'button-energized',
+					onTap: function(e) {
+						e.preventDefault();
+						$scope.game.word = $scope.random(DicoService);
+						// return implicite car le mot est déjà stock dans le scope gràace au ng-model du input
+					}	
+		  		},
+				{
+					text: '<b>Ok</b>',
+					type: 'button-positive',
+					onTap: function(e) {
+						if (!$scope.game.word || $scope.game.word.length < 3 || $scope.game.word.length > 10) {
+							//don't allow the user to close unless he enters wifi password
+							e.preventDefault();
+						} 
+					}
+				}
+			   ]
 			 }).then(function(res) {
-			 	if(res !== undefined) {
-			 		if(res.length >= 3 && res.length <= 10) {
-			 			$scope.word = res;
-			 			console.log($scope.word);
-			 		} else {
-						console.log('Incorrect word');
-			 		}
-			 	} else {
-			 		// get Service RandomWord
-			 		// $scope.word = ...RandomWord;
-			 	}
+			 	console.log('Le mot choisit est : ' + $scope.game.word);
 			 });
 		}, 1000);
 	});
