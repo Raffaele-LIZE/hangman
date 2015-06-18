@@ -1,6 +1,8 @@
 
 app.controller('PlayCtrl', function($scope, $ionicModal, $ionicPopup, $timeout, DicoService) {
 
+	var alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+	
 	$scope.game = {
 		word: undefined,
 		found: [],
@@ -12,17 +14,25 @@ app.controller('PlayCtrl', function($scope, $ionicModal, $ionicPopup, $timeout, 
 
 	$scope.random = function(tab) {
 		item = tab[Math.floor(Math.random()*tab.length)];
-		return item.word;
+		return item;
 	};
 
 	$scope.nextStep = function() {
-		if($scope.game.currentStep != $scope.game.nbStep) {
-			$scope.game.currentStep++;
+
+		var letter = $scope.random(alphabet);
+		console.log(letter);
+
+		if($scope.game.word.indexOf(letter) != -1) {
+			$scope.game.found.push(letter);
 		} else {
-			$scope.game.currentStep = 0;
+			$scope.game.currentStep++;
+			if($scope.game.currentStep == 10) {
+				alert('NOOBY ! =)');
+			}
 		}
 	};
 
+	// Init modal
 	$ionicModal.fromTemplateUrl('my-modal.html', {
 	    scope: $scope,
 	    animation: 'slide-in-up'
@@ -50,6 +60,7 @@ app.controller('PlayCtrl', function($scope, $ionicModal, $ionicPopup, $timeout, 
 	});
 	$scope.$on('modal.shown', function() {
 		$timeout(function() {
+			// Init popup
 			$ionicPopup.show({
 			   title: 'Choose a word between 3 and 10',
 			   template: '<input type="text" ng-model="game.word">',
@@ -61,7 +72,7 @@ app.controller('PlayCtrl', function($scope, $ionicModal, $ionicPopup, $timeout, 
 			      	type: 'button-energized',
 					onTap: function(e) {
 						e.preventDefault();
-						$scope.game.word = $scope.random(DicoService);
+						$scope.game.word = $scope.random(DicoService).word;
 						// return implicite car le mot est déjà stock dans le scope gràace au ng-model du input
 					}	
 		  		},
@@ -78,6 +89,7 @@ app.controller('PlayCtrl', function($scope, $ionicModal, $ionicPopup, $timeout, 
 			   ]
 			 }).then(function(res) {
 			 	// console.log('Le mot choisit est : ' + $scope.game.word);
+			 	$scope.game.found.push($scope.game.word.charAt(0));
 			 });
 		}, 1000);
 	});

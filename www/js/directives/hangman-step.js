@@ -4,6 +4,6 @@ app.directive('hangmanStep', function() {
   	scope: {
   		index: '='
   	},
-    template: '<img src="img/step{{index}}.png" alt="step" />',
+    template: '<img ng-src="img/step{{index}}.png" alt="step" />',
   };
 });

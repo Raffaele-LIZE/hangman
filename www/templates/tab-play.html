@@ -14,8 +14,13 @@
         </ion-header-bar>
         <ion-content>
 
-          <div class="hangman-img-step"><hangman-step index="game.currentStep" /></div>
-          <div><hangman-data word="game.word" find="game.found" /></div>
+          <div class="hangman-img-step">
+            <hangman-step index="game.currentStep" />
+          </div>
+
+          <div>
+            <hangman-data word="game.word" found="game.found" />
+          </div>
           <button ng-click="nextStep();">NEXT STEP</button>
 
         </ion-content>
