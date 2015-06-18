@@ -7689,3 +7689,8 @@ a.button {
   width: 300px;
   margin: 0 auto;
   text-align: center; }
+
+.letter {
+  display: inline-block;
+  font-size: 20px;
+  text-transform: uppercase; }

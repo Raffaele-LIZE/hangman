@@ -77,7 +77,7 @@ app.controller('PlayCtrl', function($scope, $ionicModal, $ionicPopup, $timeout, 
 				}
 			   ]
 			 }).then(function(res) {
-			 	console.log('Le mot choisit est : ' + $scope.game.word);
+			 	// console.log('Le mot choisit est : ' + $scope.game.word);
 			 });
 		}, 1000);
 	});

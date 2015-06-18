@@ -5,9 +5,26 @@ app.directive('hangmanData', function() {
   		word: '=',
   		found: '='
   	},
-    template: '<div class="find-word">{{word}}</div><div class="selected-letters"></div>',
+    templateUrl: 'templates/data-word.html',
     link: function(scope, element, attrs) {
-    	console.log(scope);
+      
+      scope.letters = [];
+
+      scope.$watch(function(scope) {
+        
+      });
+
+      var s = scope.word;
+
+      if(s && s != undefined) {
+        for (var i = 0; i < s.length; i++) {
+            scope.letters[i] = { char: s.charAt(i), display: false };
+        }
+        console.log(scope.letters);
+
+      } else {
+        console.log('word undefined');
+      }   
     }
   };
 });
