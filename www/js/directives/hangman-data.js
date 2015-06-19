@@ -5,7 +5,8 @@ app.directive('hangmanData', function() {
     replace : false,
     scope :  {
       word : '=',
-      found : '='
+      found : '=',
+      is_finished : '=finish' // Camel Case in html replace by dash 
     },
     link : function(scope, element, attrs) {
 
@@ -40,6 +41,11 @@ app.directive('hangmanData', function() {
             if(_.indexOf(scope.found, l) != -1) {
               scope.letters[i] = l;
             }
+          }
+
+          // Check is_finished
+          if(_.indexOf(scope.letters, '_') == -1) {
+            scope.is_finished = true;
           }
 
           console.log(scope.letters);
