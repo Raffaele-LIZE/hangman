@@ -10,7 +10,7 @@ app.controller('PlayCtrl', function($scope, $rootScope, $ionicModal, $ionicPopup
 		currentStep: 0,
 		nbStep: 10,
 		is_finished: false,
-		currentPlayer: 'user',
+		currentPlayer: 'computer',
 	}
 
 	$scope.$watch('game.is_finished', function(newValue, oldValue) {
@@ -27,10 +27,10 @@ app.controller('PlayCtrl', function($scope, $rootScope, $ionicModal, $ionicPopup
 	// Init $broadcast Game Next
 	$scope.$on('game::next', function() {
 		$scope.interval = setInterval(function() {
-			$scope.nextStep();
+			$scope.nextStepComputer();
 			// Force the update of variable changed in setInterval
 			$scope.$apply();
-		}, 3000);
+		}, 1000);
 	});
 
 	// Init $broadcast Game End
@@ -52,11 +52,16 @@ app.controller('PlayCtrl', function($scope, $rootScope, $ionicModal, $ionicPopup
 			title : my_title,
 			template : my_template 
 		}).then(function() {
-			// Reset variable
+			// Reset attributes in game object
+			$scope.game.word = undefined;
+			$scope.game.found = [];
+			$scope.game.currentStep = 0;
+			$scope.game.is_finished = false;
+
 		});
 	});
 
-	$scope.nextStep = function() {
+	$scope.nextStepComputer = function() {
 		var letter = $scope.random(alphabet);
 		console.log('Letter selected : ',letter);
 
